@@ -1,0 +1,55 @@
+import json
+
+# Initialize an empty dictionary to store contributions
+contributions = {}
+
+def load_contributions():
+try:
+with open("contributions.json", "r") as file:
+return json.load(file)
+except FileNotFoundError:
+return {}
+
+def save_contributions():
+with open("contributions.json", "w") as file:
+json.dump(contributions, file)
+
+def add_contribution(username, repo_name):
+if username not in contributions:
+contributions[username] = []
+
+contributions[username].append(repo_name)
+save_contributions()
+
+def show_contributions():
+for username, repos in contributions.items():
+print(f"{username}: {', '.join(repos)}")
+
+def main():
+global contributions
+contributions = load_contributions()
+
+while True:
+print("\nHacktoberfest Contributions Tracker")
+print("1. Add Contribution")
+print("2. Show Contributions")
+print("3. Exit")
+
+choice = input("Enter your choice: ")
+
+if choice == "1":
+username = input("Enter your GitHub username: ")
+repo_name = input("Enter the repository name: ")
+add_contribution(username, repo_name)
+print("Contribution added!")
+
+elif choice == "2":
+print("\nContributions:")
+show_contributions()
+
+elif choice == "3":
+print("Exiting...")
+break
+
+if __name__ == "__main__":
+main()
